@@ -1,0 +1,39 @@
+.portfolio-page {
+  padding: 2rem;
+  padding-top: 3rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  background-color: #f9f9f9;
+}
+
+.header-bar {
+  background-color: #add8e6;
+  padding: 0.5rem 2rem;
+  margin: -2rem -2rem 1rem -2rem;
+  border-radius: 6px 6px 0 0;
+}
+
+.header-bar h4 {
+  color: #333;
+  margin: 0;
+  font-size: 1.5rem;
+  text-align: left;
+}
+
+.content {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.content h1 {
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.content p {
+  color: #666;
+  font-size: 1.1rem;
+  line-height: 1.6;
+}

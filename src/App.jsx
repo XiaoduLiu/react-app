@@ -5,6 +5,7 @@ import MenuBar from './components/MenuBar';
 import Home from './pages/Home';
 import About from './pages/About';
 import Contact from './pages/Contact';
+import Deal from './pages/Deal';
 import './App.css';
 
 // Register all AG-Grid Enterprise modules
@@ -23,6 +24,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/deal" element={<Deal />} />
           </Routes>
         </main>
       </div>

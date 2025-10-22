@@ -1,5 +1,5 @@
-import Form from '../components/Form';
-import DealList from '../components/DealList';
+import DealForm from '../components/home/DealForm';
+import DealList from '../components/home/DealList';
 import './Home.css';
 
 function Home() {
@@ -8,7 +8,7 @@ function Home() {
       <div className="header-bar">
         <h4>Search Trade Blotters</h4>
       </div>
-      <Form />
+      <DealForm />
       <DealList />
     </div>
   );

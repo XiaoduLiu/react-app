@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import './Form.css';
+import './DealForm.css';
 
-function Form() {
+function DealForm() {
   const [formData, setFormData] = useState({
     securityDescription: '',
     securityIdentifier: '',
@@ -164,4 +164,4 @@ function Form() {
   );
 }
 
-export default Form;
+export default DealForm;
