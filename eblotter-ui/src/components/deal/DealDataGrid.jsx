@@ -186,7 +186,6 @@ function DealDataGrid() {
 
   return (
     <div className="deal-data-grid-container">
-      <h3 className="grid-title">Deal Data Grid</h3>
       <div className="grid-wrapper">
         <AgGridReact
           theme={myTheme}

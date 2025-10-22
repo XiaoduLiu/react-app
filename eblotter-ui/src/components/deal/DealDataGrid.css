@@ -1,8 +1,8 @@
 .deal-data-grid-container {
   background-color: white;
-  padding: 2rem;
+  padding-top: 1rem;
   border-radius: 8px;
-  margin-bottom: 2rem;
+  margin: -2rem -2rem -2rem -2rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
