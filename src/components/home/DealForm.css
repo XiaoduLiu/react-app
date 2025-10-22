@@ -9,9 +9,10 @@
 
 .form-container .form-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr) !important;
-  gap: 1.5rem;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
   margin-bottom: 2rem;
+  width: 100%;
 }
 
 .form-field {
@@ -19,16 +20,10 @@
   flex-direction: row;
   align-items: center;
   gap: 1rem;
-}
-
-/* Add padding to leftmost column (1st, 3rd, 5th fields) */
-.form-field:nth-child(2n+1) {
-  padding-left: 50px;
-}
-
-/* Add padding to rightmost column (2nd, 4th fields) */
-.form-field:nth-child(2n) {
-  padding-right: 50px;
+  padding: 1rem;
+  box-sizing: border-box;
+  border: 1px solid #ddd;
+  width: 100%;
 }
 
 .form-field label {

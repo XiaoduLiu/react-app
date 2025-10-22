@@ -31,8 +31,8 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 1rem;
-  padding: 1rem;
+  gap: 0rem;
+  padding: 0rem;
   border: 1px solid #ddd;
   border-radius: 4px;
   background-color: #fafafa;
