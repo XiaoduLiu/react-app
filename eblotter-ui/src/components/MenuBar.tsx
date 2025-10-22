@@ -10,6 +10,9 @@ function MenuBar() {
             <Link to="/">Home</Link>
           </li>
           <li>
+            <Link to="/search">Search</Link>
+          </li>
+          <li>
             <Link to="/deal">Deal</Link>
           </li>
           <li className="dropdown">

@@ -8,6 +8,7 @@ import Contact from './pages/Contact';
 import Deal from './pages/Deal';
 import Portfolio from './pages/Portfolio';
 import Broker from './pages/Broker';
+import Search from './pages/Search';
 import './App.css';
 
 // Register all AG-Grid Enterprise modules
@@ -24,6 +25,7 @@ function App() {
         <main className="main-content">
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/search" element={<Search />}/>
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/deal" element={<Deal />} />
