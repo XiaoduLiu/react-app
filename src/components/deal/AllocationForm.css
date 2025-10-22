@@ -1,9 +1,10 @@
-.deal-form-container {
+.allocation-form-container {
   background-color: white;
   padding: 2rem;
   border-radius: 8px;
   margin-bottom: 2rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 100%;
 }
 
 .form-section {
@@ -18,11 +19,12 @@
   border-bottom: 2px solid #646cff;
 }
 
-.form-grid {
+.allocation-form-container .form-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1.5rem;
   margin-bottom: 1rem;
+  width: 100%;
 }
 
 .form-field {
@@ -30,6 +32,10 @@
   flex-direction: row;
   align-items: center;
   gap: 1rem;
+  padding: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #fafafa;
 }
 
 .form-field.full-width {

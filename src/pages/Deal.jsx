@@ -1,4 +1,4 @@
-import DealForm from '../components/deal/DealForm';
+import AllocationForm from '../components/deal/AllocationForm';
 import AllocationGrid from '../components/deal/AllocationGrid';
 import DealDataGrid from '../components/deal/DealDataGrid';
 import './Deal.css';
@@ -9,7 +9,7 @@ function Deal() {
       <div className="header-bar">
         <h4>Deal Management</h4>
       </div>
-      <DealForm />
+      <AllocationForm />
       <AllocationGrid />
       <DealDataGrid />
     </div>

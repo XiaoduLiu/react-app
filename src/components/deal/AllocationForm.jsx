@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import './DealForm.css';
+import './AllocationForm.css';
 
-function DealForm() {
+function AllocationForm() {
   const [formData, setFormData] = useState({
     // Section 1 - 6 fields
     dealId: '',
@@ -32,8 +32,8 @@ function DealForm() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('Deal form submitted:', formData);
-    alert('Deal submitted!');
+    console.log('Allocation form submitted:', formData);
+    alert('Allocation submitted!');
   };
 
   const handleClear = (e) => {
@@ -58,10 +58,10 @@ function DealForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="deal-form-container">
+    <form onSubmit={handleSubmit} className="allocation-form-container">
       {/* Section 1 - 6 fields */}
       <div className="form-section">
-        <h3 className="section-title">Deal Information</h3>
+        <h3 className="section-title">Allocation Information</h3>
         <div className="form-grid">
           <div className="form-field">
             <label htmlFor="dealId">Deal ID</label>
@@ -141,7 +141,7 @@ function DealForm() {
 
       {/* Section 2 - 9 fields */}
       <div className="form-section">
-        <h3 className="section-title">Deal Details</h3>
+        <h3 className="section-title">Allocation Details</h3>
         <div className="form-grid">
           <div className="form-field">
             <label htmlFor="amount">Amount</label>
@@ -280,4 +280,4 @@ function DealForm() {
   );
 }
 
-export default DealForm;
+export default AllocationForm;
