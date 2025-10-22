@@ -12,8 +12,16 @@ function MenuBar() {
           <li>
             <Link to="/deal">Deal</Link>
           </li>
-          <li>
-            <Link to="/contact">Contact</Link>
+          <li className="dropdown">
+            <span className="dropdown-toggle">Lookups</span>
+            <ul className="dropdown-menu">
+              <li>
+                <Link to="/portfolio">Portfolio</Link>
+              </li>
+              <li>
+                <Link to="/broker">Broker</Link>
+              </li>
+            </ul>
           </li>
         </ul>
         <div className="welcome-message">
