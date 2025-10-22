@@ -1,0 +1,100 @@
+.allocation-table-container {
+  background-color: white;
+  padding: 0;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  margin: 2rem -2rem 2rem -2rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.allocation-table-title {
+  margin: -1rem 2rem -1rem 2rem
+}
+
+.grid-title {
+  color: #333;
+  font-size: 1.2rem;
+}
+
+.allocation-table {
+  width: 100%;
+  border: 1 solid color( red green blue);
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.allocation-table thead {
+  background-color: #f5f5f5;
+}
+
+.header-row-1 th,
+.header-row-2 th {
+  border: 1px solid #ddd;
+  padding: 0.5rem;
+  text-align: center;
+  font-weight: 600;
+  color: #333;
+}
+
+.group-header {
+  background-color: #f0f0f0;
+}
+
+.single-header {
+  background-color: #f0f0f0;
+  vertical-align: middle;
+}
+
+.column-header {
+  background-color: #f8f8f8;
+}
+
+.allocation-table tbody tr {
+  border-bottom: 1px solid #ddd;
+}
+
+.allocation-table tbody tr:hover {
+  background-color: #f9f9f9;
+}
+
+.allocation-table tbody td {
+  border: 1px solid #ddd;
+  padding: 0.5rem;
+  text-align: center;
+}
+
+.cell-readonly {
+  background-color: #f5f5f5;
+  color: #666;
+}
+
+.cell-editable {
+  background-color: white;
+  cursor: text;
+  padding: 0;
+}
+
+.cell-editable input {
+  width: 100%;
+  border: none;
+  outline: none;
+  padding: 0.5rem;
+  text-align: center;
+  background-color: transparent;
+  font-family: inherit;
+  font-size: inherit;
+}
+
+.cell-editable input:focus {
+  background-color: #e8f4fd;
+  outline: 2px solid #646cff;
+  outline-offset: -2px;
+}
+
+.row-approved {
+  background-color: #d4edda !important;
+}
+
+.row-pending {
+  background-color: #fff3cd !important;
+}

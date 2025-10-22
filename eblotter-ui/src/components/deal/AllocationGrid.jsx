@@ -4,12 +4,11 @@ import { themeAlpine } from 'ag-grid-community';
 import './AllocationGrid.css';
 
 function AllocationGrid() {
-  // Sample allocation data
+  // Sample allocation data - only 3 rows
   const [rowData] = useState([
-    { allocationId: 'A001', entity: 'Entity A', percentage: 25.5, amount: 127500, status: 'Approved', allocatedBy: 'John Doe', allocatedDate: '2024-10-15' },
-    { allocationId: 'A002', entity: 'Entity B', percentage: 30.0, amount: 150000, status: 'Pending', allocatedBy: 'Jane Smith', allocatedDate: '2024-10-16' },
-    { allocationId: 'A003', entity: 'Entity C', percentage: 20.0, amount: 100000, status: 'Approved', allocatedBy: 'Bob Johnson', allocatedDate: '2024-10-17' },
-    { allocationId: 'A004', entity: 'Entity D', percentage: 24.5, amount: 122500, status: 'Approved', allocatedBy: 'Alice Brown', allocatedDate: '2024-10-18' },
+    { col1: 'A001', col2: 'Entity A', col3: 25.5, col4: 127500, col5: 'Type A', col6: 'Approved', col7: 'John Doe', col8: '2024-10-15', col9: 'Notes 1' },
+    { col1: 'A002', col2: 'Entity B', col3: 30.0, col4: 150000, col5: 'Type B', col6: 'Pending', col7: 'Jane Smith', col8: '2024-10-16', col9: 'Notes 2' },
+    { col1: 'A003', col2: 'Entity C', col3: 20.0, col4: 100000, col5: 'Type C', col6: 'Approved', col7: 'Bob Johnson', col8: '2024-10-17', col9: 'Notes 3' },
   ]);
 
   // Row style function
@@ -24,74 +23,92 @@ function AllocationGrid() {
     };
   }, []);
 
-  // Column definitions
+  // Column definitions with 9 columns and grouped headers
   const columnDefs = useMemo(() => [
     {
-      field: 'allocationId',
-      headerName: 'Allocation ID',
+      headerName: 'Group 1',
+      children: [
+        {
+          field: 'col1',
+          headerName: 'Column 1',
+          flex: 1,
+          editable: false
+        },
+        {
+          field: 'col2',
+          headerName: 'Column 2',
+          flex: 1,
+          editable: false
+        }
+      ]
+    },
+    {
+      headerName: 'Group 2',
+      children: [
+        {
+          field: 'col3',
+          headerName: 'Column 3',
+          flex: 1,
+          editable: true
+        },
+        {
+          field: 'col4',
+          headerName: 'Column 4',
+          flex: 1,
+          editable: true
+        },
+        {
+          field: 'col5',
+          headerName: 'Column 5',
+          flex: 1,
+          editable: true
+        }
+      ]
+    },
+    {
+      headerName: 'Group 3',
+      children: [
+        {
+          field: 'col6',
+          headerName: 'Column 6',
+          flex: 1,
+          editable: true
+        },
+        {
+          field: 'col7',
+          headerName: 'Column 7',
+          flex: 1,
+          editable: true
+        },
+        {
+          field: 'col8',
+          headerName: 'Column 8',
+          flex: 1,
+          editable: true
+        }
+      ]
+    },
+    {
+      field: 'col9',
+      headerName: 'Column 9',
       flex: 1,
-      filter: true,
-      sortable: true
-    },
-    {
-      field: 'entity',
-      headerName: 'Entity',
-      flex: 1.5,
-      filter: true,
-      sortable: true
-    },
-    {
-      field: 'percentage',
-      headerName: 'Percentage (%)',
-      flex: 1,
-      filter: 'agNumberColumnFilter',
-      sortable: true,
-      valueFormatter: params => `${params.value}%`
-    },
-    {
-      field: 'amount',
-      headerName: 'Amount',
-      flex: 1.2,
-      filter: 'agNumberColumnFilter',
-      sortable: true,
-      valueFormatter: params => `$${params.value.toLocaleString()}`
-    },
-    {
-      field: 'status',
-      headerName: 'Status',
-      flex: 1,
-      filter: true,
-      sortable: true
-    },
-    {
-      field: 'allocatedBy',
-      headerName: 'Allocated By',
-      flex: 1.3,
-      filter: true,
-      sortable: true
-    },
-    {
-      field: 'allocatedDate',
-      headerName: 'Allocated Date',
-      flex: 1.2,
-      filter: 'agDateColumnFilter',
-      sortable: true
-    },
+      editable: true
+    }
   ], []);
 
   // Default column properties
   const defaultColDef = useMemo(() => ({
     resizable: true,
-    sortable: true,
-    filter: true,
+    sortable: false,
+    filter: false,
+    suppressMovable: true,
+    lockPosition: true,
+    headerClass: 'center-header'
   }), []);
 
   // Create custom theme
   const myTheme = useMemo(() => {
-    return themeAlpine.withParams({
-      headerBackgroundColor: '#646cff',
-      headerTextColor: '#ffffff',
-    });
+    return themeAlpine;
   }, []);
 
   return (
@@ -106,6 +123,8 @@ function AllocationGrid() {
           getRowStyle={getRowStyle}
           animateRows={true}
           domLayout="normal"
+          suppressMenuHide={true}
+          suppressColumnVirtualisation={true}
         />
       </div>
     </div>

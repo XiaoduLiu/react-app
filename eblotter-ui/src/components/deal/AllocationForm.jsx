@@ -1,32 +1,36 @@
 import { useState } from 'react';
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormControl from '@mui/material/FormControl';
 import './AllocationForm.css';
 
 function AllocationForm() {
   const [formData, setFormData] = useState({
     // Section 1 - 6 fields
-    dealId: '',
-    dealName: '',
-    client: '',
-    dealType: '',
-    startDate: '',
-    endDate: '',
+    dealCircle: '',
+    descOfSecurity: '',
+    allocationType: '',
+    circleDate: '',
+    isAddOn: false,
+    circleNotes: '',
     // Section 2 - 9 fields
-    amount: '',
-    currency: '',
-    status: '',
-    owner: '',
-    region: '',
-    industry: '',
-    riskLevel: '',
-    approver: '',
-    notes: ''
+    dealAllocation: '',
+    allocationDate: '',
+    allocationRounding: '',
+    cusip: '',
+    trader: '',
+    broker: '',
+    executionDate: '',
+    executionReason: '',
+    executionNotes: ''
   });
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value, type, checked } = e.target;
     setFormData(prev => ({
       ...prev,
-      [name]: value
+      [name]: type === 'checkbox' ? checked : value
     }));
   };
 
@@ -39,21 +43,21 @@ function AllocationForm() {
   const handleClear = (e) => {
     e.preventDefault();
     setFormData({
-      dealId: '',
-      dealName: '',
-      client: '',
-      dealType: '',
-      startDate: '',
-      endDate: '',
-      amount: '',
-      currency: '',
-      status: '',
-      owner: '',
-      region: '',
-      industry: '',
-      riskLevel: '',
-      approver: '',
-      notes: ''
+      dealCircle: '',
+      descOfSecurity: '',
+      allocationType: '',
+      circleDate: '',
+      isAddOn: false,
+      circleNotes: '',
+      dealAllocation: '',
+      allocationDate: '',
+      allocationRounding: '',
+      cusip: '',
+      trader: '',
+      broker: '',
+      executionDate: '',
+      executionReason: '',
+      executionNotes: ''
     });
   };
 
@@ -61,207 +65,203 @@ function AllocationForm() {
     <form onSubmit={handleSubmit} className="allocation-form-container">
       {/* Section 1 - 6 fields */}
       <div className="form-section">
-        <h3 className="section-title">Allocation Information</h3>
         <div className="form-grid">
           <div className="form-field">
-            <label htmlFor="dealId">Deal ID</label>
+            <label htmlFor="dealCircle">Deal Circle</label>
             <input
               type="text"
-              id="dealId"
-              name="dealId"
-              value={formData.dealId}
-              onChange={handleChange}
-              placeholder="Enter deal ID"
+              id="dealCircle"
+              name="dealCircle"
+              value={formData.dealCircle}
+              readOnly
+              placeholder="Not editable"
             />
           </div>
 
           <div className="form-field">
-            <label htmlFor="dealName">Deal Name</label>
+            <label htmlFor="descOfSecurity">Desc of Security</label>
             <input
               type="text"
-              id="dealName"
-              name="dealName"
-              value={formData.dealName}
+              id="descOfSecurity"
+              name="descOfSecurity"
+              value={formData.descOfSecurity}
               onChange={handleChange}
-              placeholder="Enter deal name"
+              placeholder="Enter description of security"
             />
           </div>
 
           <div className="form-field">
-            <label htmlFor="client">Client</label>
+            <label htmlFor="allocationType">Allocation Type</label>
             <input
               type="text"
-              id="client"
-              name="client"
-              value={formData.client}
+              id="allocationType"
+              name="allocationType"
+              value={formData.allocationType}
               onChange={handleChange}
-              placeholder="Enter client name"
+              placeholder="Enter allocation type"
             />
           </div>
 
           <div className="form-field">
-            <label htmlFor="dealType">Deal Type</label>
-            <select
-              id="dealType"
-              name="dealType"
-              value={formData.dealType}
-              onChange={handleChange}
-            >
-              <option value="">Select deal type</option>
-              <option value="New Business">New Business</option>
-              <option value="Renewal">Renewal</option>
-              <option value="Expansion">Expansion</option>
-              <option value="Upsell">Upsell</option>
-            </select>
-          </div>
-
-          <div className="form-field">
-            <label htmlFor="startDate">Start Date</label>
+            <label htmlFor="circleDate">Circle Date</label>
             <input
               type="date"
-              id="startDate"
-              name="startDate"
-              value={formData.startDate}
+              id="circleDate"
+              name="circleDate"
+              value={formData.circleDate}
               onChange={handleChange}
             />
           </div>
 
-          <div className="form-field">
-            <label htmlFor="endDate">End Date</label>
+          <div className="form-field checkbox-field">
+            <label htmlFor="isAddOn">Is Add-On</label>
             <input
-              type="date"
-              id="endDate"
-              name="endDate"
-              value={formData.endDate}
+              type="checkbox"
+              id="isAddOn"
+              name="isAddOn"
+              checked={formData.isAddOn}
               onChange={handleChange}
             />
           </div>
+
+          <div className="form-field two-column-field">
+            <label htmlFor="circleNotes">Circle Notes</label>
+            <textarea
+              id="circleNotes"
+              name="circleNotes"
+              value={formData.circleNotes}
+              onChange={handleChange}
+              placeholder="Enter circle notes"
+              rows="3"
+            />
+          </div>
+
         </div>
       </div>
 
+      <div className="form-divider"></div>
+
       {/* Section 2 - 9 fields */}
       <div className="form-section">
-        <h3 className="section-title">Allocation Details</h3>
         <div className="form-grid">
+
           <div className="form-field">
-            <label htmlFor="amount">Amount</label>
+            <label htmlFor="dealAllocation">Deal Allocation</label>
             <input
               type="number"
-              id="amount"
-              name="amount"
-              value={formData.amount}
+              id="dealAllocation"
+              name="dealAllocation"
+              value={formData.dealAllocation}
               onChange={handleChange}
-              placeholder="Enter amount"
+              placeholder="Enter deal allocation"
             />
           </div>
 
           <div className="form-field">
-            <label htmlFor="currency">Currency</label>
-            <select
-              id="currency"
-              name="currency"
-              value={formData.currency}
+            <label htmlFor="allocationDate">Allocation Date</label>
+            <input
+              type="date"
+              id="allocationDate"
+              name="allocationDate"
+              value={formData.allocationDate}
               onChange={handleChange}
-            >
-              <option value="">Select currency</option>
-              <option value="USD">USD</option>
-              <option value="EUR">EUR</option>
-              <option value="GBP">GBP</option>
-              <option value="JPY">JPY</option>
-            </select>
+            />
           </div>
 
           <div className="form-field">
-            <label htmlFor="status">Status</label>
-            <select
-              id="status"
-              name="status"
-              value={formData.status}
+            <label htmlFor="allocationRounding">Allocation Rounding</label>
+            <input
+              type="number"
+              id="allocationRounding"
+              name="allocationRounding"
+              value={formData.allocationRounding}
               onChange={handleChange}
-            >
-              <option value="">Select status</option>
-              <option value="Active">Active</option>
-              <option value="Pending">Pending</option>
-              <option value="Completed">Completed</option>
-              <option value="On Hold">On Hold</option>
-            </select>
+              placeholder="Enter allocation rounding"
+            />
           </div>
 
           <div className="form-field">
-            <label htmlFor="owner">Owner</label>
+            <label htmlFor="cusip">CUSIP</label>
             <input
               type="text"
-              id="owner"
-              name="owner"
-              value={formData.owner}
+              id="cusip"
+              name="cusip"
+              value={formData.cusip}
               onChange={handleChange}
-              placeholder="Enter owner name"
+              placeholder="Enter CUSIP"
             />
           </div>
 
           <div className="form-field">
-            <label htmlFor="region">Region</label>
+            <label htmlFor="trader">Trader</label>
             <select
-              id="region"
-              name="region"
-              value={formData.region}
+              id="trader"
+              name="trader"
+              value={formData.trader}
               onChange={handleChange}
             >
-              <option value="">Select region</option>
-              <option value="North America">North America</option>
-              <option value="Europe">Europe</option>
-              <option value="Asia Pacific">Asia Pacific</option>
-              <option value="Latin America">Latin America</option>
+              <option value="">Select trader</option>
+              <option value="Trader A">Trader A</option>
+              <option value="Trader B">Trader B</option>
+              <option value="Trader C">Trader C</option>
+              <option value="Trader D">Trader D</option>
+              <option value="Trader E">Trader E</option>
             </select>
           </div>
 
           <div className="form-field">
-            <label htmlFor="industry">Industry</label>
-            <input
-              type="text"
-              id="industry"
-              name="industry"
-              value={formData.industry}
-              onChange={handleChange}
-              placeholder="Enter industry"
-            />
-          </div>
-
-          <div className="form-field">
-            <label htmlFor="riskLevel">Risk Level</label>
+            <label htmlFor="broker">Broker</label>
             <select
-              id="riskLevel"
-              name="riskLevel"
-              value={formData.riskLevel}
+              id="broker"
+              name="broker"
+              value={formData.broker}
               onChange={handleChange}
             >
-              <option value="">Select risk level</option>
-              <option value="Low">Low</option>
-              <option value="Medium">Medium</option>
-              <option value="High">High</option>
+              <option value="">Select broker</option>
+              <option value="Broker A">Broker A</option>
+              <option value="Broker B">Broker B</option>
+              <option value="Broker C">Broker C</option>
+              <option value="Broker D">Broker D</option>
+              <option value="Broker E">Broker E</option>
             </select>
           </div>
 
           <div className="form-field">
-            <label htmlFor="approver">Approver</label>
+            <label htmlFor="executionDate">Execution Date</label>
             <input
-              type="text"
-              id="approver"
-              name="approver"
-              value={formData.approver}
+              type="date"
+              id="executionDate"
+              name="executionDate"
+              value={formData.executionDate}
               onChange={handleChange}
-              placeholder="Enter approver name"
             />
           </div>
 
-          <div className="form-field full-width">
-            <label htmlFor="notes">Notes</label>
+          <div className="form-field">
+            <label htmlFor="executionReason">Execution Reason</label>
+            <select
+              id="executionReason"
+              name="executionReason"
+              value={formData.executionReason}
+              onChange={handleChange}
+            >
+              <option value="">Select execution reason</option>
+              <option value="Market Order">Market Order</option>
+              <option value="Limit Order">Limit Order</option>
+              <option value="Stop Loss">Stop Loss</option>
+              <option value="Rebalancing">Rebalancing</option>
+              <option value="Client Request">Client Request</option>
+            </select>
+          </div>
+
+          <div className="form-field two-column-field">
+            <label htmlFor="executionNotes">Execution Notes</label>
             <textarea
-              id="notes"
-              name="notes"
-              value={formData.notes}
+              id="executionNotes"
+              name="executionNotes"
+              value={formData.executionNotes}
               onChange={handleChange}
-              placeholder="Enter additional notes"
+              placeholder="Enter execution notes"
               rows="3"
             />
           </div>

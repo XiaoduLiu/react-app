@@ -1,5 +1,5 @@
 import AllocationForm from '../components/deal/AllocationForm';
-import AllocationGrid from '../components/deal/AllocationGrid';
+import AllocationTable from '../components/deal/AllocationTable';
 import DealDataGrid from '../components/deal/DealDataGrid';
 import './Deal.css';
 
@@ -10,7 +10,7 @@ function Deal() {
         <h4>Deal Management</h4>
       </div>
       <AllocationForm />
-      <AllocationGrid />
+      <AllocationTable />
       <DealDataGrid />
     </div>
   );

@@ -1,7 +1,7 @@
 .deal-page {
   padding: 2rem;
   padding-top: 3rem;
-  max-width: 1400px;
+  max-width: 1200px;
   margin: 0 auto;
   background-color: #f9f9f9;
 }
@@ -10,7 +10,6 @@
   background-color: #add8e6;
   padding: 0.5rem 2rem;
   margin: -2rem -2rem 1rem -2rem;
-  border-radius: 6px 6px 0 0;
 }
 
 .header-bar h4 {
@@ -18,4 +17,5 @@
   margin: 0;
   font-size: 1.5rem;
   text-align: left;
+  text-decoration: none;
 }
