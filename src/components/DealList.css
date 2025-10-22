@@ -1,0 +1,33 @@
+.deal-list-container {
+  margin-top: 0.125rem;
+  padding: 2rem;
+  background-color: #f9f9f9;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.deal-list-container h2 {
+  margin: 0 0 0.75rem 0;
+  color: #333;
+  font-size: 1.8rem;
+}
+
+.grid-wrapper {
+  padding-top: 1rem;
+  border: 2px solid #000;
+  border-radius: 4px;
+}
+
+/* Override some ag-grid styles for better appearance */
+.ag-theme-alpine {
+  --ag-font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  --ag-font-size: 14px;
+  --ag-header-background-color: #646cff;
+  --ag-header-foreground-color: white;
+  --ag-odd-row-background-color: #ffffff;
+  --ag-row-hover-color: #f0f0f0;
+}
