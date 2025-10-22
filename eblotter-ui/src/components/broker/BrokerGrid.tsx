@@ -1,11 +1,17 @@
 import { useMemo, useState } from 'react';
 import { AgGridReact } from 'ag-grid-react';
-import { themeAlpine } from 'ag-grid-community';
+import { themeAlpine, ColDef } from 'ag-grid-community';
 import './BrokerGrid.css';
+
+interface BrokerData {
+  brokerId: string;
+  brokerName: string;
+  status: string;
+}
 
 function BrokerGrid() {
   // Sample broker data with 3 columns
-  const [rowData] = useState([
+  const [rowData] = useState<BrokerData[]>([
     { brokerId: 'BR001', brokerName: 'Goldman Sachs', status: 'Active' },
     { brokerId: 'BR002', brokerName: 'Morgan Stanley', status: 'Active' },
     { brokerId: 'BR003', brokerName: 'JP Morgan', status: 'Active' },
@@ -20,7 +26,7 @@ function BrokerGrid() {
 
   // Row style function based on status
   const getRowStyle = useMemo(() => {
-    return (params) => {
+    return (params: any) => {
       if (params.data.status === 'Active') {
         return { background: '#d4edda' }; // Light green
       } else if (params.data.status === 'Inactive') {
@@ -31,7 +37,7 @@ function BrokerGrid() {
   }, []);
 
   // Column definitions with 3 columns
-  const columnDefs = useMemo(() => [
+  const columnDefs = useMemo<ColDef<BrokerData>[]>(() => [
     {
       field: 'brokerId',
       headerName: 'Broker ID',
@@ -56,7 +62,7 @@ function BrokerGrid() {
   ], []);
 
   // Default column properties
-  const defaultColDef = useMemo(() => ({
+  const defaultColDef = useMemo<ColDef>(() => ({
     resizable: true,
     sortable: true,
     filter: true,

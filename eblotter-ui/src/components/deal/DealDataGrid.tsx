@@ -1,11 +1,24 @@
 import { useMemo, useState } from 'react';
 import { AgGridReact } from 'ag-grid-react';
-import { themeAlpine } from 'ag-grid-community';
+import { themeAlpine, ColDef } from 'ag-grid-community';
 import './DealDataGrid.css';
+
+interface DealData {
+  id: string;
+  dealName: string;
+  client: string;
+  amount: number;
+  currency: string;
+  status: string;
+  startDate: string;
+  endDate: string;
+  owner: string;
+  region: string;
+}
 
 function DealDataGrid() {
   // Sample data for the grid with 10 columns
-  const [rowData] = useState([
+  const [rowData] = useState<DealData[]>([
     {
       id: 'DD001',
       dealName: 'Project Alpha',
@@ -82,7 +95,7 @@ function DealDataGrid() {
 
   // Row style function
   const getRowStyle = useMemo(() => {
-    return (params) => {
+    return (params: any) => {
       if (params.data.status === 'Active') {
         return { background: '#d4edda' }; // Light green
       } else if (params.data.status === 'Pending') {
@@ -95,7 +108,7 @@ function DealDataGrid() {
   }, []);
 
   // Column definitions with 10 columns
-  const columnDefs = useMemo(() => [
+  const columnDefs = useMemo<ColDef<DealData>[]>(() => [
     {
       field: 'id',
       headerName: 'ID',
@@ -170,7 +183,7 @@ function DealDataGrid() {
   ], []);
 
   // Default column properties
-  const defaultColDef = useMemo(() => ({
+  const defaultColDef = useMemo<ColDef>(() => ({
     resizable: true,
     sortable: true,
     filter: true,

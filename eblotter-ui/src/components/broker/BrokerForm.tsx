@@ -1,12 +1,16 @@
-import { useState } from 'react';
+import { useState, ChangeEvent, FormEvent } from 'react';
 import './BrokerForm.css';
 
+interface FormData {
+  brokerName: string;
+}
+
 function BrokerForm() {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     brokerName: ''
   });
 
-  const handleChange = (e) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
@@ -14,13 +18,13 @@ function BrokerForm() {
     }));
   };
 
-  const handleAddNew = (e) => {
+  const handleAddNew = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log('Add New clicked:', formData);
     alert('Broker added!');
   };
 
-  const handleClear = (e) => {
+  const handleClear = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setFormData({
       brokerName: ''
@@ -39,7 +43,7 @@ function BrokerForm() {
             value={formData.brokerName}
             onChange={handleChange}
             placeholder="Enter broker name"
-            maxLength="100"
+            maxLength={100}
           />
         </div>
       </div>

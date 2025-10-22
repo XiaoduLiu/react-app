@@ -1,12 +1,26 @@
-import { useState } from 'react';
-import Radio from '@mui/material/Radio';
-import RadioGroup from '@mui/material/RadioGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import FormControl from '@mui/material/FormControl';
+import { useState, ChangeEvent, FormEvent } from 'react';
 import './AllocationForm.css';
 
+interface FormData {
+  dealCircle: string;
+  descOfSecurity: string;
+  allocationType: string;
+  circleDate: string;
+  isAddOn: boolean;
+  circleNotes: string;
+  dealAllocation: string;
+  allocationDate: string;
+  allocationRounding: string;
+  cusip: string;
+  trader: string;
+  broker: string;
+  executionDate: string;
+  executionReason: string;
+  executionNotes: string;
+}
+
 function AllocationForm() {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     // Section 1 - 6 fields
     dealCircle: '',
     descOfSecurity: '',
@@ -26,21 +40,22 @@ function AllocationForm() {
     executionNotes: ''
   });
 
-  const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+    const { name, value, type } = e.target;
+    const checked = (e.target as HTMLInputElement).checked;
     setFormData(prev => ({
       ...prev,
       [name]: type === 'checkbox' ? checked : value
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log('Allocation form submitted:', formData);
     alert('Allocation submitted!');
   };
 
-  const handleClear = (e) => {
+  const handleClear = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setFormData({
       dealCircle: '',
@@ -132,7 +147,7 @@ function AllocationForm() {
               value={formData.circleNotes}
               onChange={handleChange}
               placeholder="Enter circle notes"
-              rows="3"
+              rows={3}
             />
           </div>
 
@@ -262,7 +277,7 @@ function AllocationForm() {
               value={formData.executionNotes}
               onChange={handleChange}
               placeholder="Enter execution notes"
-              rows="3"
+              rows={3}
             />
           </div>
         </div>

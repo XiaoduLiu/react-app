@@ -1,11 +1,22 @@
 import { useMemo, useState } from 'react';
 import { AgGridReact } from 'ag-grid-react';
-import { themeAlpine } from 'ag-grid-community';
+import { themeAlpine, ColDef } from 'ag-grid-community';
 import './DealList.css';
+
+interface DealData {
+  dealId: string;
+  dealName: string;
+  client: string;
+  amount: number;
+  status: string;
+  startDate: string;
+  endDate: string;
+  owner: string;
+}
 
 function DealList() {
   // Sample data for the grid
-  const [rowData] = useState([
+  const [rowData] = useState<DealData[]>([
     { dealId: 'D001', dealName: 'Project Alpha', client: 'ABC Corp', amount: 150000, status: 'Active', startDate: '2024-01-15', endDate: '2024-12-31', owner: 'John Doe' },
     { dealId: 'D002', dealName: 'Project Beta', client: 'XYZ Inc', amount: 250000, status: 'Pending', startDate: '2024-02-01', endDate: '2025-01-31', owner: 'Jane Smith' },
     { dealId: 'D003', dealName: 'Project Gamma', client: 'Tech Solutions', amount: 180000, status: 'Active', startDate: '2024-03-10', endDate: '2024-11-30', owner: 'Bob Johnson' },
@@ -18,7 +29,7 @@ function DealList() {
 
   // Row style function to set background color based on status
   const getRowStyle = useMemo(() => {
-    return (params) => {
+    return (params: any) => {
       if (params.data.status === 'Active') {
         return { background: '#d4edda' }; // Light green
       } else if (params.data.status === 'Pending') {
@@ -31,7 +42,7 @@ function DealList() {
   }, []);
 
   // Column definitions with 8 columns
-  const columnDefs = useMemo(() => [
+  const columnDefs = useMemo<ColDef<DealData>[]>(() => [
     {
       field: 'dealId',
       headerName: 'Deal ID',
@@ -92,7 +103,7 @@ function DealList() {
   ], []);
 
   // Default column properties
-  const defaultColDef = useMemo(() => ({
+  const defaultColDef = useMemo<ColDef>(() => ({
     resizable: true,
     sortable: true,
     filter: true,

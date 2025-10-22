@@ -1,11 +1,23 @@
 import { useMemo, useState } from 'react';
 import { AgGridReact } from 'ag-grid-react';
-import { themeAlpine } from 'ag-grid-community';
+import { themeAlpine, ColDef } from 'ag-grid-community';
 import './PortfolioGrid.css';
+
+interface PortfolioData {
+  portfolioId: string;
+  portfolioName: string;
+  manager: string;
+  strategy: string;
+  totalValue: number;
+  currency: string;
+  inceptionDate: string;
+  riskProfile: string;
+  performance: number;
+}
 
 function PortfolioGrid() {
   // Sample portfolio data with 9 columns
-  const [rowData] = useState([
+  const [rowData] = useState<PortfolioData[]>([
     {
       portfolioId: 'PF001',
       portfolioName: 'Growth Fund Alpha',
@@ -98,7 +110,7 @@ function PortfolioGrid() {
 
   // Row style function based on risk profile
   const getRowStyle = useMemo(() => {
-    return (params) => {
+    return (params: any) => {
       if (params.data.riskProfile === 'Low') {
         return { background: '#d4edda' }; // Light green
       } else if (params.data.riskProfile === 'Medium') {
@@ -111,7 +123,7 @@ function PortfolioGrid() {
   }, []);
 
   // Column definitions with 9 columns
-  const columnDefs = useMemo(() => [
+  const columnDefs = useMemo<ColDef<PortfolioData>[]>(() => [
     {
       field: 'portfolioId',
       headerName: 'Portfolio ID',
@@ -180,7 +192,7 @@ function PortfolioGrid() {
   ], []);
 
   // Default column properties
-  const defaultColDef = useMemo(() => ({
+  const defaultColDef = useMemo<ColDef>(() => ({
     resizable: true,
     sortable: true,
     filter: true,

@@ -1,14 +1,20 @@
-import { useState } from 'react';
+import { useState, ChangeEvent, FormEvent } from 'react';
 import './PortfolioForm.css';
 
+interface FormData {
+  portfolioType: string;
+  portfolioName: string;
+  portfolioCode: string;
+}
+
 function PortfolioForm() {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     portfolioType: '',
     portfolioName: '',
     portfolioCode: ''
   });
 
-  const handleChange = (e) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
@@ -16,13 +22,13 @@ function PortfolioForm() {
     }));
   };
 
-  const handleAddNew = (e) => {
+  const handleAddNew = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log('Add New clicked:', formData);
     alert('Portfolio added!');
   };
 
-  const handleClear = (e) => {
+  const handleClear = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setFormData({
       portfolioType: '',
@@ -60,7 +66,7 @@ function PortfolioForm() {
             value={formData.portfolioName}
             onChange={handleChange}
             placeholder="Enter portfolio name"
-            maxLength="100"
+            maxLength={100}
           />
         </div>
 
@@ -73,7 +79,7 @@ function PortfolioForm() {
             value={formData.portfolioCode}
             onChange={handleChange}
             placeholder="Enter portfolio code"
-            maxLength="100"
+            maxLength={100}
           />
         </div>
       </div>

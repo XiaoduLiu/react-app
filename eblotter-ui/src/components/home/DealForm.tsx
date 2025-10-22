@@ -1,8 +1,24 @@
-import { useState } from 'react';
+import { useState, ChangeEvent, FormEvent } from 'react';
 import './DealForm.css';
 
+interface FormData {
+  securityDescription: string;
+  securityIdentifier: string;
+  tradeStartDate: string;
+  tradeEndDate: string;
+  trader: string;
+}
+
+interface Errors {
+  securityDescription: string;
+  securityIdentifier: string;
+  tradeStartDate: string;
+  tradeEndDate: string;
+  trader: string;
+}
+
 function DealForm() {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     securityDescription: '',
     securityIdentifier: '',
     tradeStartDate: '',
@@ -10,7 +26,7 @@ function DealForm() {
     trader: ''
   });
 
-  const [errors, setErrors] = useState({
+  const [errors, setErrors] = useState<Errors>({
     securityDescription: '',
     securityIdentifier: '',
     tradeStartDate: '',
@@ -18,7 +34,7 @@ function DealForm() {
     trader: ''
   });
 
-  const handleChange = (e) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
 
     // Limit to 100 characters
@@ -29,7 +45,7 @@ function DealForm() {
       }));
 
       // Clear error when user starts typing
-      if (errors[name]) {
+      if (errors[name as keyof Errors]) {
         setErrors(prev => ({
           ...prev,
           [name]: ''
@@ -38,22 +54,22 @@ function DealForm() {
     }
   };
 
-  const validateForm = () => {
-    const newErrors = {};
+  const validateForm = (): boolean => {
+    const newErrors: Partial<Errors> = {};
     let isValid = true;
 
     Object.keys(formData).forEach(key => {
-      if (formData[key].length > 100) {
-        newErrors[key] = 'Maximum 100 characters allowed';
+      if (formData[key as keyof FormData].length > 100) {
+        newErrors[key as keyof Errors] = 'Maximum 100 characters allowed';
         isValid = false;
       }
     });
 
-    setErrors(newErrors);
+    setErrors(newErrors as Errors);
     return isValid;
   };
 
-  const handleSubmit1 = (e) => {
+  const handleSubmit1 = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (validateForm()) {
       console.log('Submit Button 1 clicked:', formData);
@@ -63,7 +79,7 @@ function DealForm() {
     }
   };
 
-  const handleSubmit2 = (e) => {
+  const handleSubmit2 = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     if (validateForm()) {
       console.log('Submit Button 2 clicked:', formData);
@@ -85,7 +101,7 @@ function DealForm() {
               value={formData.securityDescription}
               onChange={handleChange}
               placeholder="Enter security description (max 100 characters)"
-              maxLength="100"
+              maxLength={100}
               className={errors.securityDescription ? 'error' : ''}
             />
             {errors.securityDescription && <span className="error-message">{errors.securityDescription}</span>}
@@ -113,7 +129,7 @@ function DealForm() {
               value={formData.securityIdentifier}
               onChange={handleChange}
               placeholder="Enter security identifier (max 100 characters)"
-              maxLength="100"
+              maxLength={100}
               className={errors.securityIdentifier ? 'error' : ''}
             />
             {errors.securityIdentifier && <span className="error-message">{errors.securityIdentifier}</span>}

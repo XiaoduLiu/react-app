@@ -1,15 +1,21 @@
-import { useState } from 'react';
+import { useState, ChangeEvent, FormEvent } from 'react';
 import PortfolioGrid from '../components/portfolio/PortfolioGrid';
 import './Portfolio.css';
 
+interface FormData {
+  portfolioType: string;
+  portfolioName: string;
+  portfolioCode: string;
+}
+
 function Portfolio() {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     portfolioType: '',
     portfolioName: '',
     portfolioCode: ''
   });
 
-  const handleChange = (e) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
@@ -17,13 +23,13 @@ function Portfolio() {
     }));
   };
 
-  const handleAddNew = (e) => {
+  const handleAddNew = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log('Add New clicked:', formData);
     alert('Portfolio added!');
   };
 
-  const handleClear = (e) => {
+  const handleClear = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setFormData({
       portfolioType: '',
