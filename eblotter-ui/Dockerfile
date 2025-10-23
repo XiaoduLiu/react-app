@@ -1,7 +1,6 @@
-# Multi-stage build for React Vite application
+# Single-stage build for React Vite application using Node.js
 
-# Stage 1: Build the application
-FROM node:20-alpine AS builder
+FROM node:22-alpine
 
 WORKDIR /app
 
@@ -17,17 +16,8 @@ COPY . .
 # Build the application
 RUN npm run build
 
-# Stage 2: Serve the application with nginx
-FROM nginx:alpine
+# Expose port 4173 (Vite preview default port)
+EXPOSE 4173
 
-# Copy built assets from builder stage
-COPY --from=builder /app/dist /usr/share/nginx/html
-
-# Copy nginx configuration (optional - uncomment if you create nginx.conf)
-# COPY nginx.conf /etc/nginx/conf.d/default.conf
-
-# Expose port 80
-EXPOSE 80
-
-# Start nginx
-CMD ["nginx", "-g", "daemon off;"]
+# Start the application using Vite preview
+CMD ["npm", "run", "preview", "--", "--host", "0.0.0.0"]
