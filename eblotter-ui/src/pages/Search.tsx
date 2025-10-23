@@ -1,5 +1,5 @@
-import DealForm from '../components/home/DealForm';
-import DealList from '../components/home/DealList';
+import DealForm from '../components/search/DealForm';
+import DealList from '../components/search/DealList';
 import './Search.css';
 
 function Search() {

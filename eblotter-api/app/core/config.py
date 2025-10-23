@@ -14,12 +14,6 @@ class Settings(BaseSettings):
     # Database Configuration
     DATABASE_URL: str = "sqlite:///./eblotter.db"
 
-    # Azure AD Configuration
-    AZURE_CLIENT_ID: str = ""
-    AZURE_TENANT_ID: str = ""
-    AZURE_CLIENT_SECRET: str = ""
-    OPENAPI_CLIENT_ID: str = ""
-
     # CORS Configuration
     ALLOWED_ORIGINS: str = "http://localhost:5173,http://localhost:3000"
 

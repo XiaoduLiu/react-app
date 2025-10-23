@@ -3,7 +3,7 @@ from typing import Optional
 from datetime import date, datetime
 
 
-# Deal Schemas - Keep original for backend
+# Deal Schemas
 class DealBase(BaseModel):
     """Base schema for Deal."""
     deal_id: str
@@ -32,36 +32,13 @@ class DealUpdate(BaseModel):
     owner: Optional[str] = None
 
 
-class DealResponse(BaseModel):
-    """Schema for Deal response with camelCase for frontend compatibility."""
-    id: str
-    dealName: str
-    client: Optional[str] = None
-    amount: Optional[float] = None
-    currency: str = "USD"
-    status: Optional[str] = None
-    startDate: Optional[str] = None
-    endDate: Optional[str] = None
-    owner: Optional[str] = None
-    region: str = "North America"
+class DealResponse(DealBase):
+    """Schema for Deal response."""
+    id: int
+    created_at: datetime
+    updated_at: Optional[datetime] = None
 
-    model_config = ConfigDict(from_attributes=False)
-
-    @classmethod
-    def from_orm_model(cls, deal):
-        """Convert ORM model to frontend-friendly response."""
-        return cls(
-            id=deal.deal_id,
-            dealName=deal.deal_name,
-            client=deal.client or "",
-            amount=deal.amount or 0,
-            currency="USD",
-            status=deal.status or "Pending",
-            startDate=deal.start_date.isoformat() if deal.start_date else "",
-            endDate=deal.end_date.isoformat() if deal.end_date else "",
-            owner=deal.owner or "",
-            region="North America",
-        )
+    model_config = ConfigDict(from_attributes=True)
 
 
 # Allocation Schemas

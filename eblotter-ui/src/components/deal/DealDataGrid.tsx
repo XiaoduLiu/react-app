@@ -1,26 +1,34 @@
-import { useMemo, useState, useRef, useCallback } from 'react';
+import { useMemo, useRef, useCallback, useEffect, useState } from 'react';
 import { AgGridReact } from 'ag-grid-react';
-import { themeAlpine, ColDef } from 'ag-grid-community';
-import type { GridApi } from 'ag-grid-community';
+import { themeAlpine, ColDef, RowClassParams, CellValueChangedEvent } from 'ag-grid-community';
 import './DealDataGrid.css';
 import LoadDataPopup from './LoadDataPopup';
-
-interface DealData {
-  id: string;
-  dealName: string;
-  client: string;
-  amount: number;
-  currency: string;
-  status: string;
-  startDate: string;
-  endDate: string;
-  owner: string;
-  region: string;
-}
+import { useDealStore } from '@/store/useDealStore';
+import { DealData } from '@/types/deal';
+import LoadingSpinner from '@/components/LoadingSpinner';
+import { toast } from '@/utils/toast';
 
 function DealDataGrid() {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const gridRef = useRef<AgGridReact<DealData>>(null);
+
+  // Get state and actions from Zustand store
+  const { deals, isLoading, error, fetchDeals, updateDeal } = useDealStore();
+
+  // Fetch deals on component mount
+  useEffect(() => {
+    fetchDeals().catch(() => {
+      // Fallback to sample data if API fails
+      toast.error('Failed to load deals from server. Using sample data.');
+    });
+  }, [fetchDeals]);
+
+  // Show error toast if there's an error
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+    }
+  }, [error]);
 
   // Export selected rows to CSV
   const handleExport = useCallback(() => {
@@ -29,7 +37,7 @@ function DealDataGrid() {
 
     const selectedRows = api.getSelectedRows();
     if (selectedRows.length === 0) {
-      alert('Please select rows to export');
+      toast.warning('Please select rows to export');
       return;
     }
 
@@ -38,132 +46,46 @@ function DealDataGrid() {
       onlySelected: true,
       fileName: 'deal-data-export.csv'
     });
+    toast.success(`Exported ${selectedRows.length} row(s) to CSV`);
   }, []);
 
-  // Sample data for the grid with 10 columns
-  const [rowData, setRowData] = useState<DealData[]>([
-    {
-      id: 'DD001',
-      dealName: 'Project Alpha',
-      client: 'ABC Corp',
-      amount: 500000,
-      currency: 'USD',
-      status: 'Active',
-      startDate: '2024-01-15',
-      endDate: '2024-12-31',
-      owner: 'John Doe',
-      region: 'North America'
-    },
-    {
-      id: 'DD002',
-      dealName: 'Project Beta',
-      client: 'XYZ Inc',
-      amount: 750000,
-      currency: 'EUR',
-      status: 'Pending',
-      startDate: '2024-02-01',
-      endDate: '2025-01-31',
-      owner: 'Jane Smith',
-      region: 'Europe'
-    },
-    {
-      id: 'DD003',
-      dealName: 'Project Gamma',
-      client: 'Tech Solutions',
-      amount: 320000,
-      currency: 'USD',
-      status: 'Active',
-      startDate: '2024-03-10',
-      endDate: '2024-11-30',
-      owner: 'Bob Johnson',
-      region: 'North America'
-    },
-    {
-      id: 'DD004',
-      dealName: 'Project Delta',
-      client: 'Global Services',
-      amount: 920000,
-      currency: 'GBP',
-      status: 'Completed',
-      startDate: '2023-06-01',
-      endDate: '2024-05-31',
-      owner: 'Alice Brown',
-      region: 'Europe'
-    },
-    {
-      id: 'DD005',
-      dealName: 'Project Epsilon',
-      client: 'Innovation Labs',
-      amount: 280000,
-      currency: 'USD',
-      status: 'Active',
-      startDate: '2024-04-01',
-      endDate: '2024-10-31',
-      owner: 'Charlie Wilson',
-      region: 'Asia Pacific'
-    },
-    {
-      id: 'DD006',
-      dealName: 'Project Zeta',
-      client: 'Digital Media',
-      amount: 650000,
-      currency: 'EUR',
-      status: 'Pending',
-      startDate: '2024-05-15',
-      endDate: '2025-02-28',
-      owner: 'Diana Prince',
-      region: 'Europe'
-    },
-  ]);
-
   // Handle import data from LoadDataPopup
-  const handleImportData = useCallback((importData: Array<{ id: string; amount: number | null }>) => {
+  const handleImportData = useCallback(async (importData: Array<{ id: string; amount: number | null }>) => {
     let updatedCount = 0;
-    let notFoundIds: string[] = [];
+    const notFoundIds: string[] = [];
 
-    // Create a new copy of rowData to update
-    const updatedRowData = rowData.map(dealRow => {
-      // Find matching row in import data
-      const importRow = importData.find(row => row.id === dealRow.id);
-
-      if (importRow && importRow.amount !== null && importRow.amount !== undefined) {
-        updatedCount++;
-        return {
-          ...dealRow,
-          amount: importRow.amount
-        };
-      }
-
-      return dealRow;
-    });
-
-    // Check for IDs in import data that weren't found in deal data
-    importData.forEach(importRow => {
+    // Update deals via API
+    for (const importRow of importData) {
       if (importRow.id && importRow.amount !== null && importRow.amount !== undefined) {
-        const found = rowData.some(dealRow => dealRow.id === importRow.id);
-        if (!found) {
+        const deal = deals.find(d => d.id === importRow.id);
+        if (deal) {
+          try {
+            await updateDeal(importRow.id, { amount: importRow.amount });
+            updatedCount++;
+          } catch (err) {
+            console.error(`Failed to update deal ${importRow.id}:`, err);
+          }
+        } else {
           notFoundIds.push(importRow.id);
         }
       }
-    });
-
-    // Update the grid data
-    setRowData(updatedRowData);
-
-    // Show feedback to user
-    let message = `Import completed!\n\n`;
-    message += `✓ ${updatedCount} record(s) updated successfully.`;
-
-    if (notFoundIds.length > 0) {
-      message += `\n\n⚠ ${notFoundIds.length} ID(s) not found in Deal Data Grid:\n${notFoundIds.join(', ')}`;
     }
 
-    alert(message);
-  }, [rowData]);
+    // Show feedback to user
+    if (updatedCount > 0) {
+      toast.success(`Updated ${updatedCount} record(s) successfully`);
+    }
+
+    if (notFoundIds.length > 0) {
+      toast.warning(`${notFoundIds.length} ID(s) not found: ${notFoundIds.join(', ')}`);
+    }
+  }, [deals, updateDeal]);
 
   // Row style function
   const getRowStyle = useMemo(() => {
-    return (params: any) => {
+    return (params: RowClassParams<DealData>) => {
+      if (!params.data) return undefined;
+
       if (params.data.status === 'Active') {
         return { background: '#d4edda' }; // Light green
       } else if (params.data.status === 'Pending') {
@@ -278,18 +200,39 @@ function DealDataGrid() {
     });
   }, []);
 
+  // Handle cell value changes
+  const handleCellValueChanged = useCallback(async (event: CellValueChangedEvent<DealData>) => {
+    if (!event.data) return;
+
+    const updatedDeal = event.data;
+    try {
+      await updateDeal(updatedDeal.id, updatedDeal);
+      toast.success('Deal updated successfully');
+    } catch (_err) {
+      toast.error('Failed to update deal');
+      // Refresh data to revert changes
+      await fetchDeals();
+    }
+  }, [updateDeal, fetchDeals]);
+
+  if (isLoading && deals.length === 0) {
+    return <LoadingSpinner fullPage />;
+  }
+
   return (
     <div className="deal-data-grid-container">
       <div className="grid-header">
         <button
           className="export-button"
           onClick={handleExport}
+          disabled={isLoading}
         >
           Export Selected
         </button>
         <button
           className="load-data-button"
           onClick={() => setIsPopupOpen(true)}
+          disabled={isLoading}
         >
           Load Data
         </button>
@@ -298,7 +241,7 @@ function DealDataGrid() {
         <AgGridReact
           ref={gridRef}
           theme={myTheme}
-          rowData={rowData}
+          rowData={deals}
           columnDefs={columnDefs}
           defaultColDef={defaultColDef}
           getRowStyle={getRowStyle}
@@ -306,9 +249,8 @@ function DealDataGrid() {
           domLayout="normal"
           rowSelection="multiple"
           suppressRowClickSelection={true}
-          onCellValueChanged={(params) => {
-            setRowData(params.api.getRenderedNodes().map(node => node.data));
-          }}
+          onCellValueChanged={handleCellValueChanged}
+          loading={isLoading}
         />
       </div>
       <LoadDataPopup

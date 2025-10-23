@@ -2,9 +2,6 @@
 fastapi==0.115.5
 uvicorn[standard]==0.32.1
 
-# Azure Authentication
-fastapi-azure-auth==5.0.1
-
 # Database
 SQLAlchemy==2.0.36
 alembic==1.14.0

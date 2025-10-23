@@ -1,18 +1,18 @@
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
 from typing import Optional
 from datetime import date, datetime
 
 
-# Deal Schemas - Keep original for backend
+# Deal Schemas
 class DealBase(BaseModel):
     """Base schema for Deal."""
-    deal_id: str
-    deal_name: str
+    deal_id: str = Field(..., serialization_alias="id")
+    deal_name: str = Field(..., serialization_alias="dealName")
     client: Optional[str] = None
     amount: Optional[float] = None
     status: Optional[str] = None
-    start_date: Optional[date] = None
-    end_date: Optional[date] = None
+    start_date: Optional[date] = Field(None, serialization_alias="startDate")
+    end_date: Optional[date] = Field(None, serialization_alias="endDate")
     owner: Optional[str] = None
 
 
@@ -23,17 +23,17 @@ class DealCreate(DealBase):
 
 class DealUpdate(BaseModel):
     """Schema for updating a Deal."""
-    deal_name: Optional[str] = None
+    deal_name: Optional[str] = Field(None, serialization_alias="dealName")
     client: Optional[str] = None
     amount: Optional[float] = None
     status: Optional[str] = None
-    start_date: Optional[date] = None
-    end_date: Optional[date] = None
+    start_date: Optional[date] = Field(None, serialization_alias="startDate")
+    end_date: Optional[date] = Field(None, serialization_alias="endDate")
     owner: Optional[str] = None
 
 
 class DealResponse(BaseModel):
-    """Schema for Deal response with camelCase for frontend compatibility."""
+    """Schema for Deal response with camelCase for frontend."""
     id: str
     dealName: str
     client: Optional[str] = None
@@ -45,26 +45,26 @@ class DealResponse(BaseModel):
     owner: Optional[str] = None
     region: str = "North America"
 
-    model_config = ConfigDict(from_attributes=False)
+    model_config = ConfigDict(from_attributes=True, populate_by_name=True)
 
     @classmethod
     def from_orm_model(cls, deal):
-        """Convert ORM model to frontend-friendly response."""
+        """Convert ORM model to response schema."""
         return cls(
             id=deal.deal_id,
             dealName=deal.deal_name,
-            client=deal.client or "",
-            amount=deal.amount or 0,
+            client=deal.client,
+            amount=deal.amount,
             currency="USD",
-            status=deal.status or "Pending",
-            startDate=deal.start_date.isoformat() if deal.start_date else "",
-            endDate=deal.end_date.isoformat() if deal.end_date else "",
-            owner=deal.owner or "",
+            status=deal.status,
+            startDate=deal.start_date.isoformat() if deal.start_date else None,
+            endDate=deal.end_date.isoformat() if deal.end_date else None,
+            owner=deal.owner,
             region="North America",
         )
 
 
-# Allocation Schemas
+# Keep other schemas unchanged
 class AllocationBase(BaseModel):
     """Base schema for Allocation."""
     deal_circle: Optional[str] = None
