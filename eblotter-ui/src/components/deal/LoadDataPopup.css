@@ -1,0 +1,83 @@
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.popup-content {
+  background-color: white;
+  border-radius: 8px;
+  width: 600px;
+  max-width: 90%;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.popup-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  border-bottom: 2px solid #646cff;
+}
+
+.popup-header h2 {
+  margin: 0;
+  color: #333;
+  font-size: 1.5rem;
+  flex-grow: 1;
+  text-align: center;
+}
+
+.import-button {
+  background-color: #646cff;
+  color: white;
+  border: none;
+  padding: 0.5rem 1.5rem;
+  font-size: 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.import-button:hover {
+  background-color: #535bf2;
+}
+
+.import-button:active {
+  background-color: #4248d8;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  font-size: 2rem;
+  color: #666;
+  cursor: pointer;
+  padding: 0;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.3s ease;
+}
+
+.close-button:hover {
+  color: #333;
+}
+
+.popup-grid-wrapper {
+  height: 400px;
+  padding: 1rem;
+  overflow: hidden;
+}

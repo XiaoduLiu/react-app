@@ -1,7 +1,9 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useRef, useCallback } from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import { themeAlpine, ColDef } from 'ag-grid-community';
+import type { GridApi } from 'ag-grid-community';
 import './DealDataGrid.css';
+import LoadDataPopup from './LoadDataPopup';
 
 interface DealData {
   id: string;
@@ -17,8 +19,29 @@ interface DealData {
 }
 
 function DealDataGrid() {
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const gridRef = useRef<AgGridReact<DealData>>(null);
+
+  // Export selected rows to CSV
+  const handleExport = useCallback(() => {
+    const api = gridRef.current?.api;
+    if (!api) return;
+
+    const selectedRows = api.getSelectedRows();
+    if (selectedRows.length === 0) {
+      alert('Please select rows to export');
+      return;
+    }
+
+    // Export selected rows to CSV
+    api.exportDataAsCsv({
+      onlySelected: true,
+      fileName: 'deal-data-export.csv'
+    });
+  }, []);
+
   // Sample data for the grid with 10 columns
-  const [rowData] = useState<DealData[]>([
+  const [rowData, setRowData] = useState<DealData[]>([
     {
       id: 'DD001',
       dealName: 'Project Alpha',
@@ -93,6 +116,51 @@ function DealDataGrid() {
     },
   ]);
 
+  // Handle import data from LoadDataPopup
+  const handleImportData = useCallback((importData: Array<{ id: string; amount: number | null }>) => {
+    let updatedCount = 0;
+    let notFoundIds: string[] = [];
+
+    // Create a new copy of rowData to update
+    const updatedRowData = rowData.map(dealRow => {
+      // Find matching row in import data
+      const importRow = importData.find(row => row.id === dealRow.id);
+
+      if (importRow && importRow.amount !== null && importRow.amount !== undefined) {
+        updatedCount++;
+        return {
+          ...dealRow,
+          amount: importRow.amount
+        };
+      }
+
+      return dealRow;
+    });
+
+    // Check for IDs in import data that weren't found in deal data
+    importData.forEach(importRow => {
+      if (importRow.id && importRow.amount !== null && importRow.amount !== undefined) {
+        const found = rowData.some(dealRow => dealRow.id === importRow.id);
+        if (!found) {
+          notFoundIds.push(importRow.id);
+        }
+      }
+    });
+
+    // Update the grid data
+    setRowData(updatedRowData);
+
+    // Show feedback to user
+    let message = `Import completed!\n\n`;
+    message += `✓ ${updatedCount} record(s) updated successfully.`;
+
+    if (notFoundIds.length > 0) {
+      message += `\n\n⚠ ${notFoundIds.length} ID(s) not found in Deal Data Grid:\n${notFoundIds.join(', ')}`;
+    }
+
+    alert(message);
+  }, [rowData]);
+
   // Row style function
   const getRowStyle = useMemo(() => {
     return (params: any) => {
@@ -107,28 +175,33 @@ function DealDataGrid() {
     };
   }, []);
 
-  // Column definitions with 10 columns
+  // Column definitions with 10 columns (all editable)
   const columnDefs = useMemo<ColDef<DealData>[]>(() => [
     {
       field: 'id',
       headerName: 'ID',
       flex: 0.8,
       filter: true,
-      sortable: true
+      sortable: true,
+      editable: true,
+      checkboxSelection: true,
+      headerCheckboxSelection: true
     },
     {
       field: 'dealName',
       headerName: 'Deal Name',
       flex: 1.5,
       filter: true,
-      sortable: true
+      sortable: true,
+      editable: true
     },
     {
       field: 'client',
       headerName: 'Client',
       flex: 1.3,
       filter: true,
-      sortable: true
+      sortable: true,
+      editable: true
     },
     {
       field: 'amount',
@@ -136,6 +209,8 @@ function DealDataGrid() {
       flex: 1.2,
       filter: 'agNumberColumnFilter',
       sortable: true,
+      editable: true,
+      cellDataType: 'number',
       valueFormatter: params => `$${params.value.toLocaleString()}`
     },
     {
@@ -143,42 +218,48 @@ function DealDataGrid() {
       headerName: 'Currency',
       flex: 0.8,
       filter: true,
-      sortable: true
+      sortable: true,
+      editable: true
     },
     {
       field: 'status',
       headerName: 'Status',
       flex: 1,
       filter: true,
-      sortable: true
+      sortable: true,
+      editable: true
     },
     {
       field: 'startDate',
       headerName: 'Start Date',
       flex: 1.1,
       filter: 'agDateColumnFilter',
-      sortable: true
+      sortable: true,
+      editable: true
     },
     {
       field: 'endDate',
       headerName: 'End Date',
       flex: 1.1,
       filter: 'agDateColumnFilter',
-      sortable: true
+      sortable: true,
+      editable: true
     },
     {
       field: 'owner',
       headerName: 'Owner',
       flex: 1.2,
       filter: true,
-      sortable: true
+      sortable: true,
+      editable: true
     },
     {
       field: 'region',
       headerName: 'Region',
       flex: 1.3,
       filter: true,
-      sortable: true
+      sortable: true,
+      editable: true
     },
   ], []);
 
@@ -199,8 +280,23 @@ function DealDataGrid() {
 
   return (
     <div className="deal-data-grid-container">
+      <div className="grid-header">
+        <button
+          className="export-button"
+          onClick={handleExport}
+        >
+          Export Selected
+        </button>
+        <button
+          className="load-data-button"
+          onClick={() => setIsPopupOpen(true)}
+        >
+          Load Data
+        </button>
+      </div>
       <div className="grid-wrapper">
         <AgGridReact
+          ref={gridRef}
           theme={myTheme}
           rowData={rowData}
           columnDefs={columnDefs}
@@ -208,8 +304,18 @@ function DealDataGrid() {
           getRowStyle={getRowStyle}
           animateRows={true}
           domLayout="normal"
+          rowSelection="multiple"
+          suppressRowClickSelection={true}
+          onCellValueChanged={(params) => {
+            setRowData(params.api.getRenderedNodes().map(node => node.data));
+          }}
         />
       </div>
+      <LoadDataPopup
+        isOpen={isPopupOpen}
+        onClose={() => setIsPopupOpen(false)}
+        onImport={handleImportData}
+      />
     </div>
   );
 }
