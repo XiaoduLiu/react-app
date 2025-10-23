@@ -118,7 +118,7 @@ function PortfolioGrid() {
       } else if (params.data.riskProfile === 'High' || params.data.riskProfile === 'Very High') {
         return { background: '#f8d7da' }; // Light red
       }
-      return null;
+      return undefined;
     };
   }, []);
 

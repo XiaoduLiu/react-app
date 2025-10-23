@@ -32,7 +32,7 @@ function AllocationGrid() {
       } else if (params.data.status === 'Pending') {
         return { background: '#fff3cd' }; // Light yellow
       }
-      return null;
+      return undefined;
     };
   }, []);
 

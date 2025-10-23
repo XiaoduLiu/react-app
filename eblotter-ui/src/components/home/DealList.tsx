@@ -37,7 +37,7 @@ function DealList() {
       } else if (params.data.status === 'Completed') {
         return { background: '#d1ecf1' }; // Light blue
       }
-      return null;
+      return undefined;
     };
   }, []);
 

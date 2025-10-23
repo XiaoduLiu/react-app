@@ -107,14 +107,19 @@ function AllocationForm() {
 
           <div className="form-field">
             <label htmlFor="allocationType">Allocation Type</label>
-            <input
-              type="text"
+            <select
               id="allocationType"
               name="allocationType"
               value={formData.allocationType}
               onChange={handleChange}
-              placeholder="Enter allocation type"
-            />
+            >
+              <option value="">Select allocation type</option>
+              <option value="Pro Rata">Pro Rata</option>
+              <option value="Tiered">Tiered</option>
+              <option value="Priority">Priority</option>
+              <option value="Equal">Equal</option>
+              <option value="Custom">Custom</option>
+            </select>
           </div>
 
           <div className="form-field">

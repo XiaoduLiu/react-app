@@ -32,7 +32,7 @@ function BrokerGrid() {
       } else if (params.data.status === 'Inactive') {
         return { background: '#f8d7da' }; // Light red
       }
-      return null;
+      return undefined;
     };
   }, []);
 
