@@ -102,12 +102,13 @@ open http://localhost:8000/docs
 }
 ```
 
-## Database
+## Data Storage
 
-- **Type**: SQLite (for development)
-- **File**: `eblotter.db` (auto-created)
-- **Tables**: deals, allocations, brokers, portfolios
-- **Auto-seeded**: Yes, on first startup
+- **Type**: JSON-based (in-memory with file persistence)
+- **Location**: `app/data/` directory
+- **Files**: `deals.json`, `brokers.json`, `portfolios.json`, `allocations.json`
+- **Auto-loaded**: Yes, on application startup
+- **Note**: The application no longer uses a database. All data is stored in JSON files for simplicity.
 
 ## Frontend Integration
 
@@ -134,12 +135,11 @@ ps aux | grep uvicorn
 kill -9 <PID>
 ```
 
-### Database Reset
+### Reset Data
 ```bash
-# Delete database file to reseed
-rm eblotter.db
-
-# Restart server - it will recreate and reseed
+# To reset to original seed data, edit the JSON files in app/data/
+# The server will reload automatically (if using --reload flag)
+# Or restart manually:
 ./run.sh
 ```
 

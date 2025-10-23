@@ -1,0 +1,74 @@
+[
+  {
+    "id": 1,
+    "portfolio_id": "PORT-001",
+    "portfolio_name": "Growth Portfolio",
+    "manager": "Alice Johnson",
+    "strategy": "Aggressive Growth",
+    "inception_date": "2020-01-01",
+    "aum": 50000000.00,
+    "benchmark": "S&P 500",
+    "risk_profile": "High",
+    "performance": 15.5
+  },
+  {
+    "id": 2,
+    "portfolio_id": "PORT-002",
+    "portfolio_name": "Value Fund",
+    "manager": "Bob Smith",
+    "strategy": "Value Investing",
+    "inception_date": "2018-06-15",
+    "aum": 75000000.00,
+    "benchmark": "Russell 2000",
+    "risk_profile": "Medium",
+    "performance": 12.3
+  },
+  {
+    "id": 3,
+    "portfolio_id": "PORT-003",
+    "portfolio_name": "Balanced Portfolio",
+    "manager": "Carol Williams",
+    "strategy": "Balanced Mix",
+    "inception_date": "2019-03-20",
+    "aum": 100000000.00,
+    "benchmark": "60/40 Stock/Bond",
+    "risk_profile": "Medium",
+    "performance": 10.8
+  },
+  {
+    "id": 4,
+    "portfolio_id": "PORT-004",
+    "portfolio_name": "Conservative Fund",
+    "manager": "David Brown",
+    "strategy": "Capital Preservation",
+    "inception_date": "2017-09-01",
+    "aum": 30000000.00,
+    "benchmark": "Barclays Aggregate",
+    "risk_profile": "Low",
+    "performance": 5.2
+  },
+  {
+    "id": 5,
+    "portfolio_id": "PORT-005",
+    "portfolio_name": "Emerging Markets",
+    "manager": "Eva Martinez",
+    "strategy": "Emerging Markets",
+    "inception_date": "2021-01-15",
+    "aum": 40000000.00,
+    "benchmark": "MSCI EM",
+    "risk_profile": "High",
+    "performance": 18.7
+  },
+  {
+    "id": 6,
+    "portfolio_id": "PORT-006",
+    "portfolio_name": "Technology Fund",
+    "manager": "Frank Chen",
+    "strategy": "Technology Focus",
+    "inception_date": "2022-04-01",
+    "aum": 60000000.00,
+    "benchmark": "NASDAQ",
+    "risk_profile": "High",
+    "performance": 22.4
+  }
+]

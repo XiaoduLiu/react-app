@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "broker_id": "BRK-001",
+    "broker_name": "Goldman Sachs",
+    "status": "Active"
+  },
+  {
+    "id": 2,
+    "broker_id": "BRK-002",
+    "broker_name": "Morgan Stanley",
+    "status": "Active"
+  },
+  {
+    "id": 3,
+    "broker_id": "BRK-003",
+    "broker_name": "JP Morgan",
+    "status": "Active"
+  },
+  {
+    "id": 4,
+    "broker_id": "BRK-004",
+    "broker_name": "Bank of America",
+    "status": "Active"
+  },
+  {
+    "id": 5,
+    "broker_id": "BRK-005",
+    "broker_name": "Citigroup",
+    "status": "Active"
+  }
+]

@@ -3,9 +3,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 
 from app.core.config import settings
-from app.db.base import Base, engine
 from app.api import deals, allocations, brokers, portfolios
-from app.db.seed import seed_all
+from app.data.json_store import json_store
 
 
 @asynccontextmanager
@@ -13,16 +12,10 @@ async def lifespan(app: FastAPI):
     """Lifespan context manager for startup and shutdown events."""
     # Startup
     print("🚀 Starting eBlotter API...")
-    
-    # Create database tables
-    Base.metadata.create_all(bind=engine)
-    print("✅ Database tables created")
 
-    # Seed database with initial data
-    try:
-        seed_all()
-    except Exception as e:
-        print(f"⚠️  Seeding note: {e}")
+    # Load JSON data
+    json_store.load_data()
+    print("✅ JSON data loaded successfully")
 
     print("✅ eBlotter API started successfully!")
     yield

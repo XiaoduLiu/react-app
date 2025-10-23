@@ -1,9 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status
-from sqlalchemy.orm import Session
 from typing import List
 
-from app.db.base import get_db
-from app.models.deal import Deal
+from app.data.json_store import JSONStore, get_json_store
 from app.schemas.deal import DealCreate, DealUpdate, DealResponse
 
 router = APIRouter(prefix="/deals", tags=["deals"])
@@ -13,74 +11,116 @@ router = APIRouter(prefix="/deals", tags=["deals"])
 def get_deals(
     skip: int = 0,
     limit: int = 100,
-    db: Session = Depends(get_db),
+    store: JSONStore = Depends(get_json_store),
 ):
     """Get all deals."""
-    deals = db.query(Deal).offset(skip).limit(limit).all()
+    deals = store.get_deals()
+    # Apply pagination
+    paginated_deals = deals[skip : skip + limit]
     # Convert to frontend-friendly format
-    return [DealResponse.from_orm_model(deal) for deal in deals]
+    return [
+        DealResponse(
+            id=deal["deal_id"],
+            dealName=deal["deal_name"],
+            client=deal.get("client", ""),
+            amount=deal.get("amount", 0),
+            currency="USD",
+            status=deal.get("status", "Pending"),
+            startDate=deal["start_date"] if "start_date" in deal else "",
+            endDate=deal["end_date"] if "end_date" in deal else "",
+            owner=deal.get("owner", ""),
+            region="North America",
+        )
+        for deal in paginated_deals
+    ]
 
 
 @router.get("/{deal_id}", response_model=DealResponse)
 def get_deal(
-    deal_id: str,  # Changed to string to match deal_id
-    db: Session = Depends(get_db),
+    deal_id: str,
+    store: JSONStore = Depends(get_json_store),
 ):
     """Get a specific deal by deal_id."""
-    deal = db.query(Deal).filter(Deal.deal_id == deal_id).first()
+    deal = store.get_deal(deal_id)
     if not deal:
         raise HTTPException(status_code=404, detail="Deal not found")
-    return DealResponse.from_orm_model(deal)
+    return DealResponse(
+        id=deal["deal_id"],
+        dealName=deal["deal_name"],
+        client=deal.get("client", ""),
+        amount=deal.get("amount", 0),
+        currency="USD",
+        status=deal.get("status", "Pending"),
+        startDate=deal["start_date"] if "start_date" in deal else "",
+        endDate=deal["end_date"] if "end_date" in deal else "",
+        owner=deal.get("owner", ""),
+        region="North America",
+    )
 
 
 @router.post("/", response_model=DealResponse, status_code=status.HTTP_201_CREATED)
 def create_deal(
     deal: DealCreate,
-    db: Session = Depends(get_db),
+    store: JSONStore = Depends(get_json_store),
 ):
     """Create a new deal."""
     # Check if deal_id already exists
-    existing_deal = db.query(Deal).filter(Deal.deal_id == deal.deal_id).first()
+    existing_deal = store.get_deal(deal.deal_id)
     if existing_deal:
         raise HTTPException(status_code=400, detail="Deal ID already exists")
 
-    db_deal = Deal(**deal.model_dump())
-    db.add(db_deal)
-    db.commit()
-    db.refresh(db_deal)
-    return DealResponse.from_orm_model(db_deal)
+    deal_data = deal.model_dump()
+    created_deal = store.create_deal(deal_data)
+    return DealResponse(
+        id=created_deal["deal_id"],
+        dealName=created_deal["deal_name"],
+        client=created_deal.get("client", ""),
+        amount=created_deal.get("amount", 0),
+        currency="USD",
+        status=created_deal.get("status", "Pending"),
+        startDate=created_deal["start_date"] if "start_date" in created_deal else "",
+        endDate=created_deal["end_date"] if "end_date" in created_deal else "",
+        owner=created_deal.get("owner", ""),
+        region="North America",
+    )
 
 
 @router.put("/{deal_id}", response_model=DealResponse)
 def update_deal(
-    deal_id: str,  # Changed to string to match deal_id
+    deal_id: str,
     deal: DealUpdate,
-    db: Session = Depends(get_db),
+    store: JSONStore = Depends(get_json_store),
 ):
     """Update a deal."""
-    db_deal = db.query(Deal).filter(Deal.deal_id == deal_id).first()
-    if not db_deal:
+    existing_deal = store.get_deal(deal_id)
+    if not existing_deal:
         raise HTTPException(status_code=404, detail="Deal not found")
 
+    # Merge existing data with updates
     update_data = deal.model_dump(exclude_unset=True)
-    for field, value in update_data.items():
-        setattr(db_deal, field, value)
+    updated_data = {**existing_deal, **update_data}
 
-    db.commit()
-    db.refresh(db_deal)
-    return DealResponse.from_orm_model(db_deal)
+    updated_deal = store.update_deal(deal_id, updated_data)
+    return DealResponse(
+        id=updated_deal["deal_id"],
+        dealName=updated_deal["deal_name"],
+        client=updated_deal.get("client", ""),
+        amount=updated_deal.get("amount", 0),
+        currency="USD",
+        status=updated_deal.get("status", "Pending"),
+        startDate=updated_deal["start_date"] if "start_date" in updated_deal else "",
+        endDate=updated_deal["end_date"] if "end_date" in updated_deal else "",
+        owner=updated_deal.get("owner", ""),
+        region="North America",
+    )
 
 
 @router.delete("/{deal_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_deal(
-    deal_id: str,  # Changed to string to match deal_id
-    db: Session = Depends(get_db),
+    deal_id: str,
+    store: JSONStore = Depends(get_json_store),
 ):
     """Delete a deal."""
-    db_deal = db.query(Deal).filter(Deal.deal_id == deal_id).first()
-    if not db_deal:
+    if not store.delete_deal(deal_id):
         raise HTTPException(status_code=404, detail="Deal not found")
-
-    db.delete(db_deal)
-    db.commit()
     return None

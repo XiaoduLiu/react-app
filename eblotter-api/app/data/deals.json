@@ -1,0 +1,68 @@
+[
+  {
+    "id": 1,
+    "deal_id": "DEAL-001",
+    "deal_name": "Project Alpha",
+    "client": "Acme Corp",
+    "amount": 1000000.00,
+    "status": "Active",
+    "start_date": "2024-01-15",
+    "end_date": "2024-12-31",
+    "owner": "John Smith"
+  },
+  {
+    "id": 2,
+    "deal_id": "DEAL-002",
+    "deal_name": "Project Beta",
+    "client": "Beta Industries",
+    "amount": 500000.00,
+    "status": "Pending",
+    "start_date": "2024-02-01",
+    "end_date": "2024-11-30",
+    "owner": "Jane Doe"
+  },
+  {
+    "id": 3,
+    "deal_id": "DEAL-003",
+    "deal_name": "Project Gamma",
+    "client": "Gamma Solutions",
+    "amount": 750000.00,
+    "status": "Active",
+    "start_date": "2024-01-20",
+    "end_date": "2024-10-31",
+    "owner": "Bob Johnson"
+  },
+  {
+    "id": 4,
+    "deal_id": "DEAL-004",
+    "deal_name": "Project Delta",
+    "client": "Delta Enterprises",
+    "amount": 2000000.00,
+    "status": "Completed",
+    "start_date": "2023-06-01",
+    "end_date": "2024-05-31",
+    "owner": "Alice Williams"
+  },
+  {
+    "id": 5,
+    "deal_id": "DEAL-005",
+    "deal_name": "Project Epsilon",
+    "client": "Epsilon Corp",
+    "amount": 1500000.00,
+    "status": "Active",
+    "start_date": "2024-03-01",
+    "end_date": "2025-02-28",
+    "owner": "Charlie Brown"
+  },
+  {
+    "id": 6,
+    "deal_id": "DEAL-006",
+    "deal_name": "Project Zeta",
+    "client": "Zeta Industries",
+    "amount": 3000000.00,
+    "status": "Pending",
+    "start_date": "2024-04-01",
+    "end_date": "2025-03-31",
+    "owner": "Diana Prince"
+  }
+]
