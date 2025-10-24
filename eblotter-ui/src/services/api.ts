@@ -3,12 +3,9 @@ import axios, { AxiosInstance, AxiosError } from 'axios';
 // Get base URL from environment variables
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
 
-// api context
-const API_ROOT = "/api/v1"
-
 // Create axios instance with default config
 const apiClient: AxiosInstance = axios.create({
-  baseURL: API_BASE_URL + {API_ROOT},
+  baseURL: API_BASE_URL,
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
