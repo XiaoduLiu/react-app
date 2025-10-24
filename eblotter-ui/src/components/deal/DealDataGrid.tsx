@@ -200,20 +200,20 @@ function DealDataGrid() {
     });
   }, []);
 
-  // Handle cell value changes
-  const handleCellValueChanged = useCallback(async (event: CellValueChangedEvent<DealData>) => {
+  // Handle cell value changes - keep changes locally in grid only, don't update backend
+  const handleCellValueChanged = useCallback((event: CellValueChangedEvent<DealData>) => {
     if (!event.data) return;
 
-    const updatedDeal = event.data;
-    try {
-      await updateDeal(updatedDeal.id, updatedDeal);
-      toast.success('Deal updated successfully');
-    } catch (_err) {
-      toast.error('Failed to update deal');
-      // Refresh data to revert changes
-      await fetchDeals();
-    }
-  }, [updateDeal, fetchDeals]);
+    // Changes are kept in the grid state only
+    // No API call is made to update the backend
+    // You can add a separate "Save" button if you want to persist changes later
+    console.log('Cell value changed:', {
+      field: event.colDef.field,
+      oldValue: event.oldValue,
+      newValue: event.newValue,
+      rowData: event.data
+    });
+  }, []);
 
   if (isLoading && deals.length === 0) {
     return <LoadingSpinner fullPage />;
